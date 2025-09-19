@@ -3,6 +3,7 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import CartPage from "./pages/CartPage";
 import Checkout from "./pages/CheckOut";
+import ItemDetailContainer from "./containers/ItemDetailContainer";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/category/:categoryId" element={<Home />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/item/:id" element={<ItemDetailContainer />} />
           <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </main>
