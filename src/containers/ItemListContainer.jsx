@@ -1,25 +1,32 @@
 import { useEffect, useState } from "react";
-import products from "../data/products";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../services/firebaseConfig";
 import ItemList from "../components/ItemList";
 
 export default function ItemListContainer() {
-  const [items, setItems] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // Simula una llamada a una API o Firebase con setTimeout
-    const getProducts = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(products);
-      }, 1000);
-    });
+    const getProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const items = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(items);
+      } catch (error) {
+        console.error("Error cargando productos: ", error);
+      }
+    };
 
-    getProducts.then((res) => setItems(res));
+    getProducts();
   }, []);
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Catálogo de productos</h2>
-      <ItemList items={items} />
+      <h2>Catálogo de productos</h2>
+      <ItemList products={products} />
     </div>
   );
 }

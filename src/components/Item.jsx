@@ -1,20 +1,23 @@
 import { Link } from "react-router-dom";
 
-export default function Item({ item }) {
+import { useCart } from "../context/CartContext";
+
+export default function Item({ product }) {
+  const { addToCart } = useCart();
+
   return (
     <div className="card h-100">
-      <img
-        src={item.image}
-        className="card-img-top"
-        alt={item.name}
-        style={{ height: "200px", objectFit: "cover" }}
-      />
+      <img src={product.image} className="card-img-top" alt={product.title} />
       <div className="card-body d-flex flex-column">
-        <h5 className="card-title">{item.name}</h5>
-        <p className="card-text">Precio: ${item.price}</p>
-        <Link to={`/item/${item.id}`} className="btn btn-primary mt-auto">
-          Ver detalle
-        </Link>
+        <h5 className="card-title">{product.title}</h5>
+        <p className="card-text">${product.price}</p>
+
+        <button
+          className="btn btn-primary mt-auto"
+          onClick={() => addToCart(product, 1)}
+        >
+          Agregar al carrito
+        </button>
       </div>
     </div>
   );
